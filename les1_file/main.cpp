@@ -4,8 +4,8 @@
 
 int main()
 {
-    std::string path_from = "E:\\cpp_project\\NextLevel\\.gitignore";
-    std::string path_to = "E:\\cpp_project\\NextLevel\\les1_file\\.gitignore";
+    std::wstring path_from = L"D:\\cpp_project\\NextLevel\\\Les1File\\.gitignore";
+    std::wstring path_to = L"D:\\cpp_project\\NextLevel\\\Les1File\\.gitignore1";
 
     WIN32_FIND_DATA FileData;
     HANDLE          hSearch;
@@ -18,7 +18,7 @@ int main()
         printf("No text files found.\n");
     }
 
-    if(CopyFile(FileData.cFileName, L"E:\\cpp_project\\NextLevel\\.gitignore1", FALSE)){
+    if(CopyFile(path_from.c_str(), path_to.c_str(), FALSE)){
         printf("Copy file.\n");
     } else {
         printf("Could not copy file.\n");
