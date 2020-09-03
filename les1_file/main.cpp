@@ -4,6 +4,7 @@
 
 int main()
 {
+    /*
     std::wstring path_from = L"D:\\cpp_project\\NextLevel\\\Les1File\\.gitignore";
     std::wstring path_to = L"D:\\cpp_project\\NextLevel\\\Les1File\\.gitignore1";
 
@@ -24,6 +25,45 @@ int main()
         printf("Could not copy file.\n");
     }
 
-    FindClose(hSearch);
+    FindClose(hSearch); */
+
+    HANDLE hFile = 0;
+    char DataBuffer[] = "This is some test data to write to the file.yu";
+    DWORD dwBytesToWrite = (DWORD)strlen(DataBuffer);
+    DWORD dwBytesWritten = 0;
+    BOOL bErrorFlag = FALSE;
+    BOOL bErrorFlag1 = FALSE;
+    
+
+
+    hFile = CreateFileA("E:/cpp_project/NextLevel/.gitignore1",                // name of the write
+        GENERIC_WRITE | GENERIC_READ,          // open for writing
+        0,                      // do not share
+        NULL,                   // default security
+        CREATE_NEW,             // create new file only
+        FILE_ATTRIBUTE_NORMAL,  // normal file
+        NULL);                  // no attr. template
+ 
+    /*
+    bErrorFlag1 = ReadFile(
+        hFile,
+        DataBuffer,
+        dwBytesToWrite,
+        &dwBytesToWrite,
+        NULL
+    );*/
+
+    bErrorFlag = WriteFile(
+        hFile,           // open file handle
+        DataBuffer,      // start of data to write
+        dwBytesToWrite,  // number of bytes to write
+        &dwBytesWritten, // number of bytes that were written
+        NULL);            // no overlapped structure
+
+
+
+
+    CloseHandle(hFile);
+
 
 }
