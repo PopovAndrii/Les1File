@@ -28,42 +28,55 @@ int main()
     FindClose(hSearch); */
 
     HANDLE hFile = 0;
+    HANDLE hFile1 = 0;
     char DataBuffer[] = "This is some test data to write to the file.yu";
     DWORD dwBytesToWrite = (DWORD)strlen(DataBuffer);
     DWORD dwBytesWritten = 0;
     BOOL bErrorFlag = FALSE;
     BOOL bErrorFlag1 = FALSE;
+
+    hFile = CreateFileA("D:/cpp_project/NextLevel/Les1File/.gitignore", // name of the write
+        GENERIC_WRITE | GENERIC_READ, // open for writing
+        0,                      // do not share
+        NULL,                   // default security
+        OPEN_ALWAYS,            // create new file only
+        FILE_ATTRIBUTE_NORMAL,  // normal file
+        NULL);                  // no attr. template
+ 
     
+    DWORD buf, tmp;
+    bErrorFlag1 = ReadFile(
+        hFile,
+        &buf,
+        sizeof(buf),
+        &tmp,
+        NULL
+    );
+    if (bErrorFlag1) { 
+        std::cout << "Read \n"; 
+    } else {
+        std::cout << GetLastError() << "\n";
+    }
 
-
-    hFile = CreateFileA("E:/cpp_project/NextLevel/.gitignore1",                // name of the write
+    hFile1 = CreateFileA("D:/cpp_project/NextLevel/Les1File/.gitignore1",
         GENERIC_WRITE | GENERIC_READ,          // open for writing
         0,                      // do not share
         NULL,                   // default security
         CREATE_NEW,             // create new file only
         FILE_ATTRIBUTE_NORMAL,  // normal file
         NULL);                  // no attr. template
- 
-    /*
-    bErrorFlag1 = ReadFile(
-        hFile,
-        DataBuffer,
-        dwBytesToWrite,
-        &dwBytesToWrite,
-        NULL
-    );*/
 
     bErrorFlag = WriteFile(
-        hFile,           // open file handle
-        DataBuffer,      // start of data to write
-        dwBytesToWrite,  // number of bytes to write
+        hFile1,           // open file handle
+        &buf,      // start of data to write
+        sizeof(buf),  // number of bytes to write
         &dwBytesWritten, // number of bytes that were written
-        NULL);            // no overlapped structure
-
-
-
+        NULL
+    );
+    if (bErrorFlag) std::cout << "Write \n";
 
     CloseHandle(hFile);
+    CloseHandle(hFile1);
 
 
 }
