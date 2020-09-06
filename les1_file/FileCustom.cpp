@@ -2,27 +2,24 @@
 
 void FileCustom::Copy(char& from, char& to) {
 
-	SetHandle(from);
+	HANDLE hR = SetHandle(from);
+	HANDLE hW = SetHandle(to);
 
-	if (Read()) {
-		CloseHandle(m_hFile);
-	}
-	else {
-		std::cout << GetLastError() << "\n";
+	for (;;) {
+		Read(hR);
+
+		// if empty file (copy empty file)
+		if (m_lpNumberOfBytesRead == 0) break;
+
+		Write(hW);
 	}
 
-	SetHandle(to);
-
-	if (Write()) {
-		CloseHandle(m_hFile);
-	}
-	else {
-		std::cout << GetLastError() << "\n";
-	}
+	CloseHandle(hR);
+	CloseHandle(hW);
 }
 
-void FileCustom::SetHandle(char& path) {
-	m_hFile = CreateFileA(
+HANDLE FileCustom::SetHandle(char& path) {
+	return CreateFileA(
 		&path,
 		GENERIC_WRITE | GENERIC_READ,
 		0,
@@ -33,22 +30,21 @@ void FileCustom::SetHandle(char& path) {
 	);
 }
 
-bool FileCustom::Read() {
-	DWORD tmp;
+bool FileCustom::Read(HANDLE hR) {
 	return ReadFile(
-		m_hFile,
+		hR,
 		&m_lpBuffer,
-		sizeof(m_lpBuffer),
-		&tmp,
+		1, // sizeof(m_lpBuffer)
+		&m_lpNumberOfBytesRead,
 		NULL
 	);
 }
 
-bool FileCustom::Write() {
+bool FileCustom::Write(HANDLE hW) {
 	return WriteFile(
-		m_hFile,
+		hW,
 		&m_lpBuffer,
-		sizeof(m_lpBuffer),
+		1,
 		&m_lpNumberOfBytesRead,
 		NULL
 	);

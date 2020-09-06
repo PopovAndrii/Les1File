@@ -13,11 +13,12 @@ public:
 	void Copy(char& from, char& to);
 
 private:
-	void SetHandle(char& path);
-	bool Read();
-	bool Write();
 
-	HANDLE m_hFile = 0;
+	HANDLE SetHandle(char& path);
+	bool Read(HANDLE hR);
+	bool Write(HANDLE hW);
+
+	HANDLE m_hFile = NULL;
 	DWORD m_lpBuffer = NULL;
 	DWORD m_lpNumberOfBytesRead = NULL;
 };
