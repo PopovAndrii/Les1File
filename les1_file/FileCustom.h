@@ -20,6 +20,7 @@ private:
 
 	HANDLE m_hFile = NULL;
 	DWORD m_lpBuffer = NULL;
+	int m_lpBufferSize = 4;
 	DWORD m_lpNumberOfBytesRead = NULL;
 };
 

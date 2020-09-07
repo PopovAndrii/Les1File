@@ -5,7 +5,14 @@ void FileCustom::Copy(char& from, char& to) {
 	HANDLE hR = SetHandle(from);
 	HANDLE hW = SetHandle(to);
 
-	for (;;) {
+	int bSize = GetFileSize(hR, 0);
+
+	int it = (bSize / m_lpBufferSize) + 1;
+
+	for (; it; --it, bSize -= m_lpBufferSize) {
+
+		if (it == 1) m_lpBufferSize = bSize;
+
 		Read(hR);
 
 		// if empty file (copy empty file)
@@ -34,7 +41,7 @@ bool FileCustom::Read(HANDLE hR) {
 	return ReadFile(
 		hR,
 		&m_lpBuffer,
-		1, // sizeof(m_lpBuffer)
+		m_lpBufferSize,
 		&m_lpNumberOfBytesRead,
 		NULL
 	);
@@ -44,7 +51,7 @@ bool FileCustom::Write(HANDLE hW) {
 	return WriteFile(
 		hW,
 		&m_lpBuffer,
-		1,
+		m_lpBufferSize,
 		&m_lpNumberOfBytesRead,
 		NULL
 	);
