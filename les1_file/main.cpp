@@ -1,6 +1,12 @@
-#include <iostream>
+#include "FileCustom.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+
+    FileCustom* f = new FileCustom();
+
+    char from[] = "E:/cpp_project/NextLevel/test1.txt";
+    char to[] = "E:/cpp_project/NextLevel/test2.txt";
+
+    f->Copy(*from, *to);
 }
